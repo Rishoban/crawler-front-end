@@ -279,16 +279,15 @@ function DashboardDetail() {
   const { id } = useParams();
   const [detailData, setDetailData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+  const { fetchRecordById } = useCrawlApi();
 
   useEffect(() => {
     if (!id) return;
     setLoading(true);
-    fetch(`http://localhost:8080/crawler/record/${id}`)
-      .then(res => res.ok ? res.json() : Promise.reject('Failed to fetch detail'))
+    fetchRecordById(id)
       .then(data => setDetailData(data))
-      .catch(() => setDetailData(null))
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, fetchRecordById]);
 
   if (loading) return <div style={{ padding: 32 }}>Loading...</div>;
   if (!detailData) return <div style={{ padding: 32 }}>No data found</div>;

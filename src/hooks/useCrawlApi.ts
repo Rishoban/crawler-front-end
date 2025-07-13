@@ -1,3 +1,4 @@
+  
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { UrlAnalysis, CrawlStatus } from '../types';
 
@@ -118,6 +119,22 @@ export function useCrawlApi() {
     }
   }, [fetchUrls]);
 
+  // Fetch detail record by id
+  const fetchRecordById = useCallback(async (id: string) => {
+    try {
+      const token = localStorage.getItem('authToken');
+      const res = await fetch(`${API_BASE}/crawler/record/${id}`, {
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+        }
+      });
+      if (!res.ok) throw new Error('Failed to fetch detail');
+      return await res.json();
+    } catch (e) {
+      return null;
+    }
+  }, []);
+
   // Polling for real-time status
   useEffect(() => {
     fetchUrls();
@@ -134,5 +151,6 @@ export function useCrawlApi() {
     bulkAnalysis,
     stopAnalysis,
     deleteSelectedUrls,
+    fetchRecordById,
   };
 }
