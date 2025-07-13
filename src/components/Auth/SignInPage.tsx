@@ -46,6 +46,8 @@ export default function SignInPage({ onSignIn }: { onSignIn: (token: string) => 
       });
       const data = await res.json();
       if (res.ok && data.token) {
+        // Store user info in localStorage
+        localStorage.setItem('authUser', JSON.stringify({ userName: data.userName }));
         onSignIn(data.token);
       } else {
         setError(data.error || 'Login failed. Please try again.');
