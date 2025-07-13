@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from 'react';
+import type { UrlAnalysis } from '../../types';
 import styles from './DashboardPage.module.css';
 import { Routes, Route, useNavigate, useParams } from 'react-router-dom';
 import Navbar from './Navbar';
@@ -30,7 +31,7 @@ function DashboardTable() {
   const [page, setPage] = useState(1);
   const [showCreate, setShowCreate] = useState(false);
 
-  const [selected, setSelected] = useState<any[]>([]);
+  const [selected, setSelected] = useState<string[]>([]);
   // Stubs for actions
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const getAuthHeaders = () => {
@@ -66,7 +67,7 @@ function DashboardTable() {
   const stopEnabled = false;
   const anyChecked = selected.length > 0 && hasRows;
   // Table data stub
-  const sortedUrls = urls || [];
+  const sortedUrls: UrlAnalysis[] = urls || [];
   const rowsPerPage = 10;
   const totalPages = Math.max(1, Math.ceil(sortedUrls.length / rowsPerPage));
 
@@ -201,7 +202,7 @@ function DashboardTable() {
                     </tr>
                   </thead>
                   <tbody>
-                    {sortedUrls.slice((page - 1) * rowsPerPage, page * rowsPerPage).map((url: any) => (
+                    {sortedUrls.slice((page - 1) * rowsPerPage, page * rowsPerPage).map((url: UrlAnalysis) => (
                       <tr key={url.id}>
                         <td style={{ padding: '12px 18px' }}>
                           <input
