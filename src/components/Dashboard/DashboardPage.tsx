@@ -296,7 +296,7 @@ function DashboardDetail() {
 
   return (
     <div style={{ padding: 32, maxWidth: 700, margin: '0 auto' }}>
-      <h3>Detail for ID: {id}</h3>
+      <h3>URL: {detailData.title}</h3>
       <ChartLinks
         internal={detailData.chartData?.internal ?? 0}
         external={detailData.chartData?.external ?? 0}
