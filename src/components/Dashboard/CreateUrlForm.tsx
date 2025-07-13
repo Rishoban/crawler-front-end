@@ -43,9 +43,13 @@ export default function CreateUrlForm({ onCreate, onCancel }: { onCreate: (url: 
       return;
     }
     setError('');
+    const token = localStorage.getItem('authToken');
     fetch('http://localhost:8080/crawler/records', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      },
       body: JSON.stringify({ url: url.trim() })
     })
       .then(res => {
