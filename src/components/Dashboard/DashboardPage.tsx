@@ -84,30 +84,6 @@ function DashboardTable() {
               value={globalSearch}
               onChange={e => { setGlobalSearch(e.target.value); setPage(1); }}
             />
-            <input
-              type="text"
-              className="form-control"
-              style={{ maxWidth: 180 }}
-              placeholder="Filter Title"
-              value={filters.title}
-              onChange={e => { setFilters(f => ({ ...f, title: e.target.value })); setPage(1); }}
-            />
-            <input
-              type="text"
-              className="form-control"
-              style={{ maxWidth: 140 }}
-              placeholder="Filter HTML Version"
-              value={filters.htmlVersion}
-              onChange={e => { setFilters(f => ({ ...f, htmlVersion: e.target.value })); setPage(1); }}
-            />
-            <input
-              type="number"
-              className="form-control"
-              style={{ maxWidth: 120 }}
-              placeholder="Filter #Internal Links"
-              value={filters.internalLinks}
-              onChange={e => { setFilters(f => ({ ...f, internalLinks: e.target.value })); setPage(1); }}
-            />
           </div>
           {loading && <div>Loading...</div>}
           
@@ -239,7 +215,29 @@ function DashboardTable() {
                       <td style={{ padding: '12px 18px' }}>{url.internalLinks}</td>
                       <td style={{ padding: '12px 18px' }}>{url.externalLinks}</td>
                       <td style={{ padding: '12px 18px' }}>{url.inaccessibleLinks}</td>
-                      <td style={{ padding: '12px 18px' }}>{url.status}</td>
+                      <td style={{ padding: '12px 18px' }}>
+                        <span
+                          style={{
+                            display: 'inline-block',
+                            minWidth: 70,
+                            fontWeight: 600,
+                            color:
+                              url.status === 'Running' ? '#388e3c' :
+                              url.status === 'Done' ? '#1976d2' :
+                              url.status === 'Error' ? '#d32f2f' :
+                              '#333',
+                            backgroundColor:
+                              url.status === 'Running' ? '#e8f5e9' :
+                              url.status === 'Done' ? '#e3f2fd' :
+                              url.status === 'Error' ? '#ffebee' :
+                              'transparent',
+                            borderRadius: 8,
+                            padding: '2px 12px',
+                          }}
+                        >
+                          {url.status.charAt(0).toUpperCase() + url.status.slice(1)}
+                        </span>
+                      </td>
                       <td style={{ padding: '12px 18px', textAlign: 'center' }}>
                         <button
                           onClick={() => navigate(`/dashboard/detail/${url.id}`)}
