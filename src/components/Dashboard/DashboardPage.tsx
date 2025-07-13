@@ -14,7 +14,7 @@ export default function DashboardPage() {
       <Navbar onSignOut={() => { localStorage.removeItem('authToken'); window.location.reload(); }} />
       <Routes>
         <Route path="/" element={<DashboardTable />} />
-        
+        <Route path="detail/:id" element={<DashboardDetail />} />
       </Routes>
     </div>
   );
@@ -272,5 +272,51 @@ function DashboardTable() {
   );
 }
 
+
+
+
+function DashboardDetail() {
+  const { id } = useParams();
+  const [detailData, setDetailData] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!id) return;
+    setLoading(true);
+    fetch(`http://localhost:8080/crawler/record/${id}`)
+      .then(res => res.ok ? res.json() : Promise.reject('Failed to fetch detail'))
+      .then(data => setDetailData(data))
+      .catch(() => setDetailData(null))
+      .finally(() => setLoading(false));
+  }, [id]);
+
+  if (loading) return <div style={{ padding: 32 }}>Loading...</div>;
+  if (!detailData) return <div style={{ padding: 32 }}>No data found</div>;
+
+  return (
+    <div style={{ padding: 32, maxWidth: 700, margin: '0 auto' }}>
+      <h3>Detail for ID: {id}</h3>
+      <ChartLinks
+        internal={detailData.chartData?.internal ?? 0}
+        external={detailData.chartData?.external ?? 0}
+      />
+      {/* List of broken links */}
+      <div style={{ marginTop: 32 }}>
+        <h5>Broken Links</h5>
+        {detailData.linksData && detailData.linksData.length > 0 ? (
+          <ul>
+            {detailData.linksData.map((link: any, idx: number) => (
+              <li key={idx}>
+                <span style={{ color: '#d32f2f' }}>{link.url}</span> (Status: {link.status})
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div style={{ color: '#888' }}>No broken links</div>
+        )}
+      </div>
+    </div>
+  );
+}
 
 
