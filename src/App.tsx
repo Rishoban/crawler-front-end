@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import SignInPage from './components/Auth/SignInPage';
 import DashboardPage from './components/Dashboard/DashboardPage';
 import './App.css';
 
 function App() {
+  useEffect(() => {
+    document.title = 'Crawler App';
+  }, []);
   const [signedIn, setSignedIn] = useState(() => {
     // Check for token in localStorage on app load
     return Boolean(localStorage.getItem('authToken'));
