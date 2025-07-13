@@ -1,35 +1,45 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import SignInPage from './components/Auth/SignInPage';
+import DashboardPage from './components/Dashboard/DashboardPage';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [signedIn, setSignedIn] = useState(() => {
+    // Check for token in localStorage on app load
+    return Boolean(localStorage.getItem('authToken'));
+  });
+
+  const handleSignIn = (token: string) => {
+    // Store the token in localStorage
+    localStorage.setItem('authToken', token);
+    setSignedIn(true);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/signin"
+          element={
+            signedIn ? <Navigate to="/dashboard" replace /> : <SignInPage onSignIn={handleSignIn} />
+          }
+        />
+        <Route
+          path="/dashboard/*"
+          element={
+            signedIn ? <DashboardPage /> : <Navigate to="/signin" replace />
+          }
+        />
+        <Route
+          path="*"
+          element={
+            signedIn ? <Navigate to="/dashboard" replace /> : <Navigate to="/signin" replace />
+          }
+        />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App
