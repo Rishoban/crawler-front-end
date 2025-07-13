@@ -1,8 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&display=swap');
+
+:root {
+  --text-dark: #23272f;
+}
+
+body {
+  color: var(--text-dark);
+  font-family: 'Heebo', Arial, sans-serif;
+  font-size: 20px;
+  line-height: 1.5em;
+  background: none;
+  margin: 0;
+  padding: 0;
+}
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  text-align: left;
 }
 
 .logo {
@@ -39,4 +55,131 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.btn-signin {
+  background: #e0e0e0;
+  color: #23272f;
+  border: none;
+  border-radius: 24px;
+  font-weight: 600;
+  font-size: 18px;
+  width: 100%;
+  margin-top: 12px;
+  transition: background 0.2s, color 0.2s;
+}
+.btn-signin:hover, .btn-signin:focus {
+  background: #23272f;
+  color: #fff;
+}
+
+.navbar-signout-btn {
+  background: #e0e0e0;
+  color: #23272f;
+  border: none;
+  border-radius: 999px;
+  font-weight: 600;
+  padding: 8px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.navbar-signout-btn:hover, .navbar-signout-btn:focus {
+  background: #23272f;
+  color: #fff;
+}
+
+.btn-pill {
+  background: #e0e0e0;
+  color: #23272f;
+  border: none;
+  border-radius: 999px;
+  font-weight: 500;
+  font-size: 20px;
+  width: 100%;
+  padding: 18px 0;
+  text-align: center;
+  transition: background 0.2s, color 0.2s;
+}
+.btn-pill:hover, .btn-pill:focus {
+  background: #23272f;
+  color: #fff;
+}
+
+.btn-create {
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  font-weight: 600;
+  padding: 8px 28px;
+  font-size: 16px;
+  margin-right: 8px;
+  transition: background 0.2s;
+  opacity: 1;
+  cursor: pointer;
+}
+.btn-create:hover, .btn-create:focus {
+  background: #1251a3;
+}
+
+.btn-create:disabled,
+.btn-delete:disabled,
+.btn-start:disabled,
+.btn-stop:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  background: #e0e0e0 !important;
+  color: #888 !important;
+  border: none !important;
+}
+
+.btn-start {
+  background: #43a047;
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  font-weight: 600;
+  padding: 8px 28px;
+  font-size: 16px;
+  margin-right: 8px;
+  transition: background 0.2s;
+  opacity: 1;
+  cursor: pointer;
+}
+.btn-start:hover, .btn-start:focus {
+  background: #2e7031;
+}
+
+.btn-stop {
+  background: #d32f2f;
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  font-weight: 600;
+  padding: 8px 28px;
+  font-size: 16px;
+  margin-right: 8px;
+  transition: background 0.2s;
+  opacity: 1;
+  cursor: pointer;
+}
+.btn-stop:hover, .btn-stop:focus {
+  background: #a31515;
+}
+
+.btn-delete {
+  background: #800000;
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  font-weight: 600;
+  padding: 8px 28px;
+  font-size: 16px;
+  transition: background 0.2s;
+  opacity: 1;
+  cursor: pointer;
+}
+.btn-delete:hover, .btn-delete:focus {
+  background: #4b0000;
 }
