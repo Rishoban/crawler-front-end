@@ -49,14 +49,19 @@ export function useCrawlApi() {
   }, [fetchUrls]);
 
   // Delete URLs (bulk)
-  const deleteUrls = useCallback(async (ids: string[]) => {
+ // Bulk delete selected URLs (for /crawler/delete endpoint)
+  const deleteSelectedUrls = useCallback(async (urls: string[]) => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`${API_BASE}/urls/bulk-delete`, {
+      const token = localStorage.getItem('authToken');
+      const res = await fetch(`${API_BASE}/crawler/delete`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ids })
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify({ urls })
       });
       if (!res.ok) throw new Error('Failed to delete URLs');
       await fetchUrls();
@@ -67,17 +72,22 @@ export function useCrawlApi() {
     }
   }, [fetchUrls]);
 
-  // Re-run analysis (bulk)
-  const rerunAnalysis = useCallback(async (ids: string[]) => {
+  
+
+   const bulkAnalysis = useCallback(async (urls: string[]) => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`${API_BASE}/urls/bulk-rerun`, {
+      const token = localStorage.getItem('authToken');
+      const res = await fetch(`${API_BASE}/crawler/bulk_analysis`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ids })
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify({ url: urls })
       });
-      if (!res.ok) throw new Error('Failed to re-run analysis');
+      if (!res.ok) throw new Error('Failed to start bulk analysis');
       await fetchUrls();
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
@@ -86,35 +96,20 @@ export function useCrawlApi() {
     }
   }, [fetchUrls]);
 
-  // Start/Stop processing (bulk)
-  const startProcessing = useCallback(async (ids: string[]) => {
+  const stopAnalysis = useCallback(async (urls: string[]) => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`${API_BASE}/urls/bulk-start`, {
+      const token = localStorage.getItem('authToken');
+      const res = await fetch(`${API_BASE}/crawler/stop_analysis`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ids })
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify({ url: urls })
       });
-      if (!res.ok) throw new Error('Failed to start processing');
-      await fetchUrls();
-    } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
-    } finally {
-      setLoading(false);
-    }
-  }, [fetchUrls]);
-
-  const stopProcessing = useCallback(async (ids: string[]) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await fetch(`${API_BASE}/urls/bulk-stop`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ids })
-      });
-      if (!res.ok) throw new Error('Failed to stop processing');
+      if (!res.ok) throw new Error('Failed to stop analysis');
       await fetchUrls();
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
@@ -136,9 +131,8 @@ export function useCrawlApi() {
     error,
     fetchUrls,
     addUrl,
-    deleteUrls,
-    rerunAnalysis,
-    startProcessing,
-    stopProcessing,
+    bulkAnalysis,
+    stopAnalysis,
+    deleteSelectedUrls,
   };
 }
